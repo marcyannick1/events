@@ -6,9 +6,10 @@ const authRoute = require('./routes/authRoute');
 const eventRoute = require("./routes/eventRoute");
 const connectDB = require('./config/database');
 
+dotenv.config();
+
 const port = process.env.SRV_PORT || 3000
 
-dotenv.config();
 const app = express()
 
 connectDB()
