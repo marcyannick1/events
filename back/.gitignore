@@ -56,5 +56,3 @@ coverage/
 # Windows
 Thumbs.db
 Desktop.ini
-
-prisma/migrations
