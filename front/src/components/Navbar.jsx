@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useAuthStore } from "../store/useAuthStore";
 import { IoPersonCircleOutline } from "react-icons/io5";
 
 export default function Navbar() {
-  const { isAuthenticated, logout } = useAuthStore();
+  const { isAuthenticated, user, loadUser } = useAuthStore();
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-    logout();
-  };
+  useEffect(() => {
+    if (isAuthenticated && !user) {
+      loadUser();
+    }
+  }, [isAuthenticated, user, loadUser]);
 
   return (
     <>
@@ -41,19 +42,12 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                {/* <Link
-                  onClick={handleLogout}
-                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
-                >
-                  Déconnexion
-                </Link> */}
-
                 <Link
                   to="/profile"
                   className="flex items-center justify-center text-gray-800 hover:text-teal-700 transition"
                 >
                   <IoPersonCircleOutline className="text-2xl mx-1" />
-                  <span className="text-lg">Bonjour {""}Profile</span>
+                  <span className="text-lg">Bonjour {user?.firstName}</span>
                 </Link>
               </>
             )}

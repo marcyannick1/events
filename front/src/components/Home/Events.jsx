@@ -72,7 +72,7 @@ export default function Events() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
       {events.map((event) => (
-        <Card event={event} />
+        <Card key={event.id} event={event} />
       ))}
     </div>
   );

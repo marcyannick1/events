@@ -44,17 +44,17 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/login" className="hover:text-teal-700">
+              <Link to="/" className="hover:text-teal-700">
                 Connexion
               </Link>
             </li>
             <li>
-              <Link to="/register" className="hover:text-teal-700">
+              <Link to="/" className="hover:text-teal-700">
                 Inscription
               </Link>
             </li>
             <li>
-              <Link to="/events" className="hover:text-teal-700">
+              <Link to="/" className="hover:text-teal-700">
                 Événements
               </Link>
             </li>

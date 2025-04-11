@@ -1,40 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { useAuthStore } from "../store/useAuthStore";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import UserServices from "../services/UserServices";
 
 export default function Profile() {
-  const { user, logout } = useAuthStore();
+  const { user, logout, isAuthenticated, loadUser } = useAuthStore();
   const [activeTab, setActiveTab] = useState("info");
 
-  const userInfo = user || {
-    firstName: "Jean",
-    lastName: "Dupont",
-    email: "jean.dupont@mail.com",
-    createdAt: "2024-05-01",
-    events: [
-      {
-        title: "Conférence JavaScript",
-        date: "2024-06-01",
-        places: 120,
-      },
-    ],
-  };
+  const [firstName, setFirstname] = useState("");
+  const [lastName, setLastname] = useState("");
+  const [email, setEmail] = useState("");
 
-  const [formData, setFormData] = useState({
-    firstName: userInfo.firstName,
-    lastName: userInfo.lastName,
-    email: userInfo.email,
-    password: "",
-  });
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
+    toast.success("Vous êtes déconnecté avec succès");
+
+    setTimeout(() => navigate("/"), 1000);
   };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handlerSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const userServices = new UserServices();
+      const token = localStorage.getItem("token");
+      await userServices.updateUser(
+        user._id,
+        { firstName, lastName, email },
+        token
+      );
+
+      toast.success("Vous avez modifié avec succès");
+    } catch (error) {
+      toast.error("Une erreur lors de la modification");
+    }
   };
+
+  useEffect(() => {
+    if (user) {
+      setFirstname(user.firstName || "");
+      setLastname(user.lastName || "");
+      setEmail(user.email || "");
+    }
+  }, [user]);
 
   return (
     <>
@@ -46,7 +57,7 @@ export default function Profile() {
             <FaUserCircle className="text-6xl text-teal-800 " />
             <div className="mx-2">
               <h1 className="text-2xl font-bold text-gray-800">
-                {formData.firstName} {formData.lastName}
+                {user?.firstName} {user?.lastName}
               </h1>
               <p className="text-sm text-gray-500">Membre depuis </p>
             </div>
@@ -86,15 +97,15 @@ export default function Profile() {
         </div>
 
         {activeTab === "info" && (
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handlerSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="text-sm text-gray-700">Prénom</label>
                 <input
                   type="text"
                   name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
+                  value={firstName}
+                  onChange={(e) => setFirstname(e.target.value)}
                   className="w-full border border-gray-300 transition outline-0 px-4 py-2 rounded mt-1 focus:ring-1 focus:ring-teal-800"
                 />
               </div>
@@ -104,8 +115,8 @@ export default function Profile() {
                 <input
                   type="text"
                   name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
+                  value={lastName}
+                  onChange={(e) => setLastname(e.target.value)}
                   className="w-full border border-gray-300 transition outline-0 px-4 py-2 rounded mt-1 focus:ring-1 focus:ring-teal-800"
                 />
               </div>
@@ -116,8 +127,8 @@ export default function Profile() {
               <input
                 type="email"
                 name="email"
-                value={formData.email}
-                onChange={handleChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full border border-gray-300 transition outline-0 px-4 py-2 rounded mt-1 focus:ring-1 focus:ring-teal-800"
               />
             </div>
@@ -134,8 +145,8 @@ export default function Profile() {
 
         {activeTab === "events" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {userInfo.events.length > 0 ? (
-              userInfo.events.map((event, index) => (
+            {user.events && user.events.length > 0 ? (
+              user.events.map((event, index) => (
                 <div
                   key={index}
                   className="bg-white border border-gray-200 rounded shadow p-4"
@@ -143,7 +154,7 @@ export default function Profile() {
                   <h3 className="text-lg font-semibold text-teal-800">
                     {event.title}
                   </h3>
-                  <p className="text-sm text-gray-500">Date : </p>
+                  <p className="text-sm text-gray-500">Date : {event.date}</p>
                   <p className="text-sm text-gray-500">
                     Places : {event.places}
                   </p>
