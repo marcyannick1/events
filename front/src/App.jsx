@@ -4,10 +4,12 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthLayout from "./layouts/AuthLayout";
 import PageLayout from "./layouts/PageLayout";
 import DashboardLayout from "./layouts/DashboardLayout";
+import PrivateRoute from "./components/PrivateRoute";
 
 import Home from "./page/Home";
 import Login from "./page/Login";
 import Register from "./page/Register";
+import Profile from "./page/Profile";
 import NotFound from "./page/NotFound";
 
 export default function App() {
@@ -16,6 +18,15 @@ export default function App() {
       <Routes>
         <Route element={<PageLayout />}>
           <Route path="/" element={<Home />}></Route>
+
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          ></Route>
         </Route>
 
         <Route path="*" element={<NotFound />}></Route>
