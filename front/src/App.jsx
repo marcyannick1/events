@@ -11,6 +11,7 @@ import Login from "./page/Login";
 import Register from "./page/Register";
 import Profile from "./page/Profile";
 import NotFound from "./page/NotFound";
+import Dashboard from "./page/Dashboard";
 
 export default function App() {
   return (
@@ -30,6 +31,9 @@ export default function App() {
         </Route>
 
         <Route path="*" element={<NotFound />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
+        <Route path="/dashboard/*" element={<Dashboard />}></Route>
 
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />}></Route>

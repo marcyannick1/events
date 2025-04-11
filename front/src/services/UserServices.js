@@ -28,6 +28,7 @@ export default class UserServices {
   }
 
   async getUser(token) {
+
     try {
       const response = await axios.get(`${CONFIG.BACKEND_API_URL}/user`, {
         headers: {
@@ -36,7 +37,7 @@ export default class UserServices {
       });
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.msg ?? "Une erreur est survenue", error);
+      throw new Error(error.response?.data?.message ?? "Une erreur est survenue");
     }
   }
 
