@@ -1,10 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import EventServices from "../../services/EventServices";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const EventDetails = ({ eventId }) => {
+    const [event, setEvent] = useState(null);
+    const [error, setError] = useState(null);
 
-const EventDetails = ({ event }) => {
-    if (!event) {
+    useEffect(() => {
+        const fetchEventDetails = async () => {
+            try {
+                const eventDetails = await EventServices.getEventById(eventId);
+                setEvent(eventDetails);
+            } catch (err) {
+                setError("Failed to fetch event details.");
+            }
+        };
+
+        if (eventId) {
+            fetchEventDetails();
+        }
+    }, [eventId]);
+
+    if (!eventId) {
         return <p>No event selected.</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
+
+    if (!event) {
+        return <p>Loading event details...</p>;
     }
 
     return (

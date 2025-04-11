@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import EventServices from "../../services/EventServices";
 
-const EventAdd = ({ onSubmit }) => {
+const EventAdd = () => {
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -11,28 +12,28 @@ const EventAdd = ({ onSubmit }) => {
         imageUrl: "",
     });
 
-    const apiUrl = process.env.REACT_APP_API_URL; // Variable d'environnement
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (onSubmit) {
-            onSubmit(formData);
+        try {
+            await EventServices.addEvent(formData);
+            console.log("Event added successfully:", formData);
+            setFormData({
+                title: "",
+                description: "",
+                location: "",
+                date: "",
+                organizer: "",
+                capacity: "",
+                imageUrl: "",
+            });
+        } catch (error) {
+            console.error("Failed to add event:", error.message);
         }
-        console.log(`Data sent to API: ${apiUrl}`, formData); // Exemple d'utilisation
-        setFormData({
-            title: "",
-            description: "",
-            location: "",
-            date: "",
-            organizer: "",
-            capacity: "",
-            imageUrl: "",
-        });
     };
 
     return (
