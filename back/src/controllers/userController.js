@@ -8,6 +8,10 @@ const createUser = async (req, res) => {
         await user.save();
         res.status(201).json({msg : "User register with success"});
     } catch (err) {
+        console.log(err);
+        if(err.code === 11000) {
+            res.status(401).json({message: "Email already exist"});
+        }
         res.status(400).json({error: err.message});
     }
 };
