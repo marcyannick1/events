@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import UserServices from '../../services/UserServices';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
@@ -8,11 +9,7 @@ const UserList = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_API_URL}/users`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch users');
-                }
-                const data = await response.json();
+                const data = await UserServices.getAllUsers();
                 setUsers(data);
             } catch (err) {
                 setError(err.message);

@@ -26,4 +26,13 @@ export default class UserServices {
       throw new Error(error.response?.msg ?? "Une erreur est survenue", error);
     }
   }
+
+  async getUsers() {
+    try {
+      const response = await axios.get(`${CONFIG.BACKEND_API_URL}/users`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.msg ?? "Une erreur est survenue");
+    }
+  }
 }
