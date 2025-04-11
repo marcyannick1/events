@@ -16,7 +16,7 @@ export default function Navbar() {
     <>
       <ToastContainer />
 
-      <nav className="bg-white py-5 px-6 shadow-2xl border-b border-gray-300">
+      <nav className="bg-white py-5 px-6 shadow-lg border-b border-gray-300">
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-3xl font-bold text-teal-800">
             <Link to="/">Events</Link>
