@@ -25,7 +25,8 @@ export default function App() {
           <Route path="/register" element={<Register />}></Route>
         </Route>
 
-        <Route element={<DashboardLayout />}></Route>
+        <Route element={<DashboardLayout />}>
+        </Route>
       </Routes>
     </BrowserRouter>
   );
