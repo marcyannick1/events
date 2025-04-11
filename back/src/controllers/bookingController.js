@@ -7,6 +7,8 @@ const registerForEvent = async (req, res) => {
     try {
         const {eventId, userId} = req.body;
 
+        console.log(req.body);
+
         const event = await Event.findById(eventId);
         if (!event) {
             return res.status(404).json({error: "Événement non trouvé"});
