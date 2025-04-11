@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import EventServices from '../../services/EventServices';
 
 const EventList = ({ events, onDelete }) => {
     const navigate = useNavigate();
@@ -9,17 +10,10 @@ const EventList = ({ events, onDelete }) => {
         const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cet événement ?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/events/${eventId}`, {
-                    method: 'DELETE',
-                });
-
-                if (response.ok) {
-                    alert("Événement supprimé avec succès !");
-                    if (onDelete) {
-                        onDelete(eventId); // Appeler une fonction de rappel si nécessaire
-                    }
-                } else {
-                    alert("Une erreur s'est produite lors de la suppression de l'événement.");
+                await EventServices.deleteEvent(eventId);
+                alert("Événement supprimé avec succès !");
+                if (onDelete) {
+                    onDelete(eventId); // Appeler une fonction de rappel si nécessaire
                 }
             } catch (error) {
                 console.error("Erreur lors de la suppression :", error);
