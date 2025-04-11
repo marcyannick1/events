@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import EventServices from "../../services/EventServices";
+import './EventEdit.css'; // Assuming you have some CSS for styling
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const eventServices = new EventServices();
 
 const EventEdit = ({ event, onSave }) => {
     const [formData, setFormData] = useState({
@@ -13,20 +15,40 @@ const EventEdit = ({ event, onSave }) => {
         imageUrl: event?.imageUrl || "",
     });
 
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (onSave) {
-            onSave(formData);
+        setLoading(true);
+        setError(null);
+
+        try {
+            if (event?.id) {
+                // Update existing event
+                await eventServices.updateEvent(event.id, formData);
+            } else {
+                // Add new event
+                await eventServices.addEvent(formData);
+            }
+            if (onSave) {
+                onSave(formData);
+            }
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
+            {error && <p style={{ color: "red" }}>{error}</p>}
             <div>
                 <label>Title:</label>
                 <input
@@ -89,7 +111,9 @@ const EventEdit = ({ event, onSave }) => {
                     onChange={handleChange}
                 />
             </div>
-            <button type="submit">Save</button>
+            <button type="submit" disabled={loading}>
+                {loading ? "Saving..." : "Save"}
+            </button>
         </form>
     );
 };
