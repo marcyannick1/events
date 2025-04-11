@@ -27,6 +27,8 @@ services:
 
   db:
     image: mongo:6
+    ports:
+      - "${PORT_BD}:27017"
     restart: always
     volumes:
       - mongo-data:/data/db
