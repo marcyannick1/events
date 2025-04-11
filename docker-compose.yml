@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  backend:
+    image: marcyannick/events-back:v1
+    ports:
+      - "${PORT_BACKEND}:3000"
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  frontend:
+    image: marcyannick/events-front:v1
+    ports:
+      - "${PORT_FRONTEND}:5173"
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  db:
+    image: mongo:6
+    ports:
+      - "${PORT_BD}:27017"
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:
