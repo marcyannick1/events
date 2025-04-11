@@ -8,9 +8,10 @@ const {
     deleteEvent,
 } = require("../controllers/eventController");
 const authMiddleware = require("../middlewares/authMiddleware");
+const isAdminMiddleware = require("../middlewares/isAdminMiddleware");
 
 // CREATE
-router.post("/", authMiddleware, createEvent);
+router.post("/", authMiddleware, isAdminMiddleware, createEvent);
 
 // READ ALL
 router.get("/", authMiddleware, getAllEvents);
@@ -19,9 +20,9 @@ router.get("/", authMiddleware, getAllEvents);
 router.get("/:id", authMiddleware, getEventById);
 
 // UPDATE
-router.put("/:id", authMiddleware, updateEvent);
+router.put("/:id", authMiddleware, isAdminMiddleware, updateEvent);
 
 // DELETE
-router.delete("/:id", authMiddleware, deleteEvent);
+router.delete("/:id", authMiddleware, isAdminMiddleware, deleteEvent);
 
 module.exports = router;
