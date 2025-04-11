@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import EventServices from '../../services/EventServices';
 
-const EventList = ({ events, onDelete }) => {
+const EventList = ({ onDelete }) => {
+    const [events, setEvents] = useState([]);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const data = await EventServices.getAllEvents();
+                setEvents(data);
+            } catch (error) {
+                console.error("Erreur lors de la récupération des événements :", error);
+                alert("Impossible de récupérer les événements.");
+            }
+        };
+
+        fetchEvents();
+    }, []);
 
     const handleDelete = async (eventId) => {
         const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cet événement ?");
@@ -12,6 +27,7 @@ const EventList = ({ events, onDelete }) => {
             try {
                 await EventServices.deleteEvent(eventId);
                 alert("Événement supprimé avec succès !");
+                setEvents(events.filter(event => event.id !== eventId)); // Mettre à jour la liste localement
                 if (onDelete) {
                     onDelete(eventId); // Appeler une fonction de rappel si nécessaire
                 }

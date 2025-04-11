@@ -9,7 +9,8 @@ const UserList = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const data = await UserServices.getAllUsers();
+                const userService = new UserServices();
+                const data = await userService.getUsers(); // Utilisation de la méthode correcte
                 setUsers(data);
             } catch (err) {
                 setError(err.message);

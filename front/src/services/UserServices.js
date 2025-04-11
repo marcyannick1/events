@@ -27,12 +27,16 @@ export default class UserServices {
     }
   }
 
-  async getUsers() {
+  async getUsers(token) {
     try {
-      const response = await axios.get(`${CONFIG.BACKEND_API_URL}/users`);
+      const response = await axios.get(`${CONFIG.BACKEND_API_URL}/user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.msg ?? "Une erreur est survenue");
+      throw new Error(error.response?.data?.message ?? "Une erreur est survenue");
     }
   }
 }
