@@ -12,11 +12,11 @@ const auth = async (req, res) => {
             const token = await generateToken({user});
             res.status(200).json({token});
         } else {
-            res.status(401).send({error: "Email ou mot de passe incorrect"});
+            res.status(401).send({message: "Email ou mot de passe incorrect"});
         }
     } catch (e) {
         console.log(e);
-        res.status(500).json({error: "Erreur lors de l'authentification"});
+        res.status(500).json({message: "Erreur lors de l'authentification"});
     }
 };
 

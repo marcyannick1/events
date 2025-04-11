@@ -5,11 +5,12 @@ const {
     getUserRegistrations,
     unregisterFromEvent,
 } = require("../controllers/bookingController");
+const authMiddleware = require("../middlewares/authMiddleware");
 
-router.post("/", registerForEvent);
+router.post("/", authMiddleware, registerForEvent);
 
-router.get("/:userId", getUserRegistrations);
+router.get("/:userId", authMiddleware, getUserRegistrations);
 
-router.delete("/", unregisterFromEvent);
+router.delete("/", authMiddleware, unregisterFromEvent);
 
 module.exports = router;
