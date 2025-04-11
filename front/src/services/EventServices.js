@@ -1,19 +1,15 @@
 const API_URL = import.meta.env.VITE_APP_BACKEND_API_URL;
 
 export default class EventServices {
-     async getAllEvents() {
-        const response = await fetch(`${API_URL}/events`, {
-            headers: {
-                // Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-        });
+    async getAllEvents() {
+        const response = await fetch(`${API_URL}/events`);
         if (!response.ok) {
             throw new Error("Failed to fetch events");
         }
         return response.json();
     }
 
-     async getEventById(eventId) {
+    async getEventById(eventId) {
         const response = await fetch(`${API_URL}/events/${eventId}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -25,7 +21,7 @@ export default class EventServices {
         return response.json();
     }
 
-     async addEvent(eventData) {
+    async addEvent(eventData) {
         const response = await fetch(`${API_URL}/events`, {
             method: "POST",
             headers: {
@@ -40,7 +36,7 @@ export default class EventServices {
         return response.json();
     }
 
-     async updateEvent(eventId, eventData) {
+    async updateEvent(eventId, eventData) {
         const response = await fetch(`${API_URL}/events/${eventId}`, {
             method: "PUT",
             headers: {
@@ -55,7 +51,7 @@ export default class EventServices {
         return response.json();
     }
 
-     async deleteEvent(eventId) {
+    async deleteEvent(eventId) {
         const response = await fetch(`${API_URL}/events/${eventId}`, {
             method: "DELETE",
             headers: {

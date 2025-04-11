@@ -11,7 +11,7 @@ export default function Dashboard() {
             <div style={{ marginLeft: '260px', padding: '20px', width: '100%' }}>
                 <Routes>
                     <Route path="users" element={<UserList />} />
-                    <Route path="events" element={<EventList events={[]} />} />
+                    <Route path="/" element={<EventList events={[]} />} />
                 </Routes>
             </div>
         </div>

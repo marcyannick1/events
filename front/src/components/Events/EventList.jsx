@@ -1,39 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import EventServices from '../../services/EventServices';
 
 const EventList = ({ onDelete }) => {
-    const [events, setEvents] = useState([]);
+    const [events, setEvents] = useState([
+        { id: 1, title: 'Événement 1', description: 'Description de l\'événement 1', date: '2025-04-01' },
+        { id: 2, title: 'Événement 2', description: 'Description de l\'événement 2', date: '2025-04-02' },
+        { id: 3, title: 'Événement 3', description: 'Description de l\'événement 3', date: '2025-04-03' },
+    ]);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                const data = await EventServices.getAllEvents();
-                setEvents(data);
-            } catch (error) {
-                console.error("Erreur lors de la récupération des événements :", error);
-                alert("Impossible de récupérer les événements.");
-            }
-        };
-
-        fetchEvents();
-    }, []);
-
-    const handleDelete = async (eventId) => {
+    const handleDelete = (eventId) => {
         const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cet événement ?");
         if (confirmDelete) {
-            try {
-                await EventServices.deleteEvent(eventId);
-                alert("Événement supprimé avec succès !");
-                setEvents(events.filter(event => event.id !== eventId)); // Mettre à jour la liste localement
-                if (onDelete) {
-                    onDelete(eventId); // Appeler une fonction de rappel si nécessaire
-                }
-            } catch (error) {
-                console.error("Erreur lors de la suppression :", error);
-                alert("Impossible de supprimer l'événement.");
+            setEvents(events.filter(event => event.id !== eventId)); // Mettre à jour la liste localement
+            alert("Événement supprimé avec succès !");
+            if (onDelete) {
+                onDelete(eventId); // Appeler une fonction de rappel si nécessaire
             }
         }
     };
