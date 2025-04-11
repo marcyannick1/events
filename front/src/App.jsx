@@ -12,6 +12,7 @@ import Register from "./page/Register";
 import Profile from "./page/Profile";
 import NotFound from "./page/NotFound";
 
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -30,6 +31,8 @@ export default function App() {
         </Route>
 
         <Route path="*" element={<NotFound />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
 
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />}></Route>
