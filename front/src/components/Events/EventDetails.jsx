@@ -1,6 +1,6 @@
 import React from "react";
 
-// filepath: c:\wamp64\www\Projet_formation\cours\Cours-Avril-2025\tp-groupe\events\front\src\components\Events\EventDetails.jsx
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const EventDetails = ({ event }) => {
     if (!event) {

@@ -11,6 +11,8 @@ const EventAdd = ({ onSubmit }) => {
         imageUrl: "",
     });
 
+    const apiUrl = process.env.REACT_APP_API_URL; // Variable d'environnement
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -21,6 +23,7 @@ const EventAdd = ({ onSubmit }) => {
         if (onSubmit) {
             onSubmit(formData);
         }
+        console.log(`Data sent to API: ${apiUrl}`, formData); // Exemple d'utilisation
         setFormData({
             title: "",
             description: "",
